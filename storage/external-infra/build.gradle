@@ -1,0 +1,7 @@
+dependencies {
+
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+}
