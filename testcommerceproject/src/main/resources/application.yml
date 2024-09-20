@@ -1,0 +1,103 @@
+spring:
+  profiles:
+    group:
+       local: dev
+       test: test
+    default: dev
+
+
+
+---
+
+springdoc:
+  packages-to-scan: sample.cafekiosk.api
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
+    path: /swagger-ui
+  api-docs:
+    path: /api-docs
+
+#server:
+#  forward-headers-strategy: framework
+
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jung.gi7777@gmail.com
+    password: obhg dnqn qsmr bvzc
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+    auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30분
+    protocol: smtp
+    default-encoding: UTF-8
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:mariadb://:3306/commerce
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: 1234
+
+    jpa:
+        hibernate:
+          ddl-auto: validate
+        show-sql: true
+        properties:
+          hibernate:
+            format_sql: true
+        defer-datasource-initialization: true # (2.5~) Hibernate ??? ?? data.sql ??
+
+    h2:
+        console:
+          enabled: true
+
+---
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test
+    username: sa
+    password:
+    hikari:
+      connection-timeout: 300000
+      maximum-pool-size: 20
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true # (2.5~) Hibernate ??? ?? data.sql ??
+
+  h2:
+    console: "h2/console"
+  sql:
+    init:
+      mode: never
