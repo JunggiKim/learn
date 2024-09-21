@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>메인 화면</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <header>
+        <h1 th:text="'환영합니다!'">환영합니다!</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a th:href="@{/home}">홈</a></li>
+            <li><a th:href="@{/about}">소개</a></li>
+            <li><a th:href="@{/contact}">연락처</a></li>
+        </ul>
+    </nav>
+    <footer>
+        <p>© 2024 회사명. 모든 권리 보유.</p>
+    </footer>
+</body>
+</html>

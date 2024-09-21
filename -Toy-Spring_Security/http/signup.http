@@ -1,0 +1,12 @@
+POST http://localhost:8080/sign-up
+Content-Type: application/json
+
+{
+  "email": "kjg@naver.com",
+  "password" : "1234",
+  "nickName": "kjg",
+  "age": "25",
+  "city": "경기도 용인시 기흥구"
+}
+
+###
