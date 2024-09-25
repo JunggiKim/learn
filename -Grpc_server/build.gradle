@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.9.4' // protobuf 설정을 위한 plugins 추가
+}
+
+group 'org.sample'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.57.1'
+    implementation 'io.grpc:grpc-protobuf:1.57.1'
+    implementation 'io.grpc:grpc-stub:1.57.1'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// IDL (protobuf) 생성 관련 Gradle 설정
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.22.3"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.57.1'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+// 원래라면 클라이언트 서버 모듈로 나뉘어서 사용을 해야겠지만 간단한 샘플이기에 jar 로  분리하고 같은프로젝트 사용
+
+// fat-jar setting
+task gRpcServerJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'org.sample.rpc.sever.HelloServiceGrpcServer'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+// fat-jar setting
+task gRpcClientJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'org.sample.rpc.client.HelloServiceClient'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
